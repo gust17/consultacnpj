@@ -51,7 +51,7 @@
                                         <div style="color: red">INCORRETO</div>
                                     @else
                                         <div
-                                            style="{{ $result->bairro != $result['buscaCEP']['bairro'] ? 'color: red' : '' }}">
+                                            style="{{ $result->bairro != strtoupper($result['buscaCEP']['bairro']) ? 'color: red' : '' }}">
                                             {{ !empty($result['buscaCEP']['bairro']) ? $result['buscaCEP']['bairro'] : 'Não informado' }}
 
                                         </div>
