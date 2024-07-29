@@ -21,6 +21,7 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
+                        <th>ID</th>
                         <th>Nome/Nome Fantasia</th>
                         <th>Sobrenome/Razao Social</th>
                         <th>Rua</th>
@@ -43,6 +44,7 @@
                             $estabelecimento = $result['estabelecimento'] ?? [];
                         @endphp
                         <tr>
+                            <td>{{$result->id}}</td>
                             <td>{{ $estabelecimento['nome_fantasia'] ?? 'N/A' }}</td>
                             <td>{{ $result['razao_social'] ?? 'N/A' }}</td>
                             <td>{{ $estabelecimento['tipo_logradouro'] ?? '' }} -- {{ $estabelecimento['logradouro'] ?? '' }}</td>

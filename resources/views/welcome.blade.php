@@ -1,6 +1,15 @@
 @extends('padrao.padrao')
 
 @section('content')
+
+    <div class="container">
+        <h1>CNPJ PROCESSADOS</h1>
+        <div class="progress">
+            <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+        </div>
+        <p>Enviados: <span id="total">0</span></p>
+        <p>Processados: <span id="processed">0</span></p>
+    </div>
     <div class="container">
 
         <div class="card">
@@ -9,6 +18,7 @@
                 <table class="table table-striped table-bordered">
                     <thead class="thead-dark">
                     <tr>
+                        <th>ID</th>
                         <th>Nome/Nome Fantasia</th>
                         <th>Sobrenome/Razão Social</th>
                         <th>Rua</th>
@@ -27,6 +37,7 @@
                     <tbody>
                     @forelse($results as $result)
                         <tr>
+                            <td>{{$result->id}}</td>
                             <td>{{ $result->nome_fantasia }}</td>
                             <td>{{ $result->razao_social }}</td>
                             <td>{{ $result->rua }}<br>
@@ -123,3 +134,27 @@
 
 @endsection
 
+@section('js')
+
+    <script>
+        function fetchProgress() {
+            $.ajax({
+                url: '/progress',
+                method: 'GET',
+                success: function(data) {
+                    $('#total').text(data.total);
+                    $('#processed').text(data.processed);
+                    $('#progress-bar').css('width', data.percentage + '%');
+                    $('#progress-bar').attr('aria-valuenow', data.percentage);
+                    $('#progress-bar').text(data.percentage.toFixed(2) + '%');
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            fetchProgress();
+            setInterval(fetchProgress, 20000); // 20000ms = 20 segundos
+        });
+    </script>
+
+@endsection

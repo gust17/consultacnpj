@@ -30,6 +30,9 @@ class CnpjBatchController extends Controller
             ProcessCnpjJob::dispatch($cnpj)->delay(now()->addSeconds($index * 30));
         }
 
+
+        return redirect(url('welcome'));
+
         return response()->json(['message' => 'Processamento iniciado.']);
     }
 
@@ -38,11 +41,16 @@ class CnpjBatchController extends Controller
         try {
             $totalCnpjs = DB::table('jobs')->count();
             $processedCnpjs = DB::table('cnpj_results')->count();
+            $calc = $totalCnpjs + $processedCnpjs;
+
+
+            $percentage = $calc != 0 ? ($processedCnpjs / $calc) * 100 : 0;
 
             return response()->json([
                 'total' => $totalCnpjs,
                 'processed' => $processedCnpjs,
-                'results' => DB::table('cnpj_results')->get()
+                'percentage' => $percentage
+               //    'results' => DB::table('cnpj_results')->get()
             ]);
         } catch (\Exception $e) {
             Log::error('Erro ao conectar ao banco de dados: ' . $e->getMessage());
